@@ -1,0 +1,57 @@
+{
+  "name": "electron-shell-lib",
+  "version": "0.1.0",
+  "description": "Common classes and utility functions for the Electron-Shell",
+  "main": "index.js",
+  "author": "Andreas Gerlach",
+  "license": "MIT",
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/appelgriebsch/electron-shell-lib.git"
+  },
+  "keywords": [
+    "electron",
+    "react",
+    "interfaces"
+  ],
+  "bugs": {
+    "url": "https://github.com/appelgriebsch/electron-shell-lib/issues"
+  },
+  "homepage": "https://github.com/appelgriebsch/electron-shell-lib#readme",
+  "babel": {
+    "presets": [
+      "es2015",
+      "react"
+    ],
+    "plugins": [
+      "babel-plugin-transform-flow-strip-types",
+      "transform-object-rest-spread"
+    ]
+  },
+  "scripts": {
+    "postinstall": "npm run compile",
+    "compile": "babel --ignore node_modules/ --compact true --source-maps inline --minified --extensions .jsx ./ -d ./",
+    "prune": "cd app && npm prune --production",
+    "generate-docs": "jsdoc -c jsdoc.json",
+    "lint": "standard \"app/**/*.jsx\"",
+    "reformat": "npm run lint || standard \"app/**/*.jsx\" --fix"
+  },
+  "dependencies": {
+    "mime": "^1.3.4",
+    "underscore": "^1.8.3",
+    "username": "^2.3.0",
+    "uuid": "^3.0.1"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.24.0",
+    "babel-plugin-transform-flow-strip-types": "^6.22.0",
+    "babel-plugin-transform-object-rest-spread": "^6.23.0",
+    "babel-preset-es2015": "^6.24.0",
+    "babel-preset-react": "^6.23.0",
+    "jsdoc": "^3.4.3",
+    "jsdoc-babel": "^0.3.0",
+    "react": "^15.4.2",
+    "react-dom": "^15.4.2",
+    "standard": "^9.0.2"
+  }
+}
