@@ -21,6 +21,7 @@
     save (doc:Object): Promise<Object>;
     get (id:string): Promise<Object>;
     query (view:string, options:Object): Promise<Object>;
+    bulkInsert (docs:Array<Object>) : Promise<Object>;
   }
 
   declare interface ISqlDatabase {
@@ -33,5 +34,20 @@
 
   declare interface IFileStorage {
     baseFolder: string;
+  }
+
+  declare interface IActivityService {
+    getByType (type:string, docDB:IDocumentDatabase): void;
+    getByDateRange (from:Date, to:Date, docDB:IDocumentDatabase): void;
+    getByIssuer (issuer:string, docDB:IDocumentDatabase): void;
+    find (filter:Object, docDB:IDocumentDatabase): void;
+    create (event:Object, docDB:IDocumentDatabase): void;
+  }
+
+  declare interface ITanslationManager {
+    switchLocale (locale:string, docDB:IDocumentDatabase): void;
+    update (locale:string, message:Object, docDB:IDocumentDatabase): void;
+    import (locale:string, messages:Array<Object>, docDB:IDocumentDatabase): void;
+    export (locale:string, docDB:IDocumentDatabase): void;
   }
 }
