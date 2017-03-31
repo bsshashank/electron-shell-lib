@@ -18,10 +18,10 @@
   }
 
   declare interface IDocumentDatabase {
-    save (doc:Object): Promise<Object>;
-    get (id:string): Promise<Object>;
-    query (view:string, options:Object): Promise<Object>;
-    bulkInsert (docs:Array<Object>) : Promise<Object>;
+    save (doc:Object): Promise<*>;
+    get (id:string): Promise<*>;
+    query (view:string, options:Object): Promise<*>;
+    bulkInsert (docs:Array<Object>) : Promise<*>;
   }
 
   declare interface ISqlDatabase {
@@ -35,6 +35,7 @@
   declare interface IFileStorage {
     appFolder: string;
     baseFolder: string;
+    iterate(path:string, pattern:string): Promise<*>;
   }
 
   declare interface IActivityService {
