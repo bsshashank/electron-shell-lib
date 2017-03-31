@@ -33,6 +33,7 @@
   }
 
   declare interface IFileStorage {
+    appFolder: string;
     baseFolder: string;
   }
 
@@ -42,6 +43,22 @@
     getByIssuer (issuer:string, docDB:IDocumentDatabase): void;
     find (filter:Object, docDB:IDocumentDatabase): void;
     create (event:Object, docDB:IDocumentDatabase): void;
+  }
+
+  declare interface IExtensionManager {
+    mountAll (fileStorage:IFileStorage, docDB:IDocumentDatabase): void;
+    activate (extension:string, docDB:IDocumentDatabase): void;
+    deactivate (extension:string, docDB:IDocumentDatabase): void;
+    install (extension:string, fileStorage:IFileStorage, docDB:IDocumentDatabase): void;
+    uninstall (extension:string, fileStorage:IFileStorage, docDB:IDocumentDatabase): void;
+  }
+
+  declare interface ISettingManager {
+    getAll (docDB:IDocumentDatabase): void;
+    getByExtension (extension:string, docDB:IDocumentDatabase): void;
+    update (setting:Object, docDB:IDocumentDatabase): void;
+    import (settings:Array<Object>, docDB:IDocumentDatabase): void;
+    export (docDB:IDocumentDatabase): void;
   }
 
   declare interface ITanslationManager {
