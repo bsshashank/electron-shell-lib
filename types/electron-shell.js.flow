@@ -32,14 +32,6 @@
   }
 
   declare interface IFileStorage {
-
-  }
-
-  declare interface IExtensionManager {
-
-  }
-
-  declare interface ISettingsManager {
-
+    baseFolder: string;
   }
 }
