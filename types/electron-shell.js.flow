@@ -38,34 +38,66 @@
     iterate(path:string, pattern:string): Promise<*>;
   }
 
+  declare type EventType = {
+
+  }
+
   declare interface IActivityService {
-    getByType (type:string, docDB:IDocumentDatabase): void;
-    getByDateRange (from:Date, to:Date, docDB:IDocumentDatabase): void;
-    getByIssuer (issuer:string, docDB:IDocumentDatabase): void;
-    find (filter:Object, docDB:IDocumentDatabase): void;
-    create (event:Object, docDB:IDocumentDatabase): void;
+    initialize(docDB:IDocumentDatabase): void;
+    getByType (type:string): void;
+    getByDateRange (from:Date, to:Date): void;
+    getByIssuer (issuer:string): void;
+    find (filter:Object): void;
+    create (event:EventType): void;
   }
 
   declare interface IExtensionManager {
-    mountAll (fileStorage:IFileStorage, docDB:IDocumentDatabase): void;
-    activate (extension:string, docDB:IDocumentDatabase): void;
-    deactivate (extension:string, docDB:IDocumentDatabase): void;
-    install (extension:string, fileStorage:IFileStorage, docDB:IDocumentDatabase): void;
-    uninstall (extension:string, fileStorage:IFileStorage, docDB:IDocumentDatabase): void;
+    initialize(fileStorage:IFileStorage, docDB:IDocumentDatabase): void;
+    mountAll (): void;
+    activate (extension:string): void;
+    deactivate (extension:string): void;
+    install (extension:string): void;
+    uninstall (extension:string): void;
+  }
+
+  declare type SettingType = {
+
   }
 
   declare interface ISettingManager {
-    getAll (docDB:IDocumentDatabase): void;
-    getByExtension (extension:string, docDB:IDocumentDatabase): void;
-    update (setting:Object, docDB:IDocumentDatabase): void;
-    import (settings:Array<Object>, docDB:IDocumentDatabase): void;
-    export (docDB:IDocumentDatabase): void;
+    initialize(docDB:IDocumentDatabase): void;
+    getByExtension (extension:string): void;
+    update (setting:SettingType): void;
+    import (settings:Array<SettingType>): void;
+    export (): void;
+  }
+
+  declare type TranslationType = {
+    _id: string,
+    description: string,
+    defaultMessage: string,
+    translation: string,
+    locale: string,
+    type: 'translation'
   }
 
   declare interface ITanslationManager {
-    switchLocale (locale:string, docDB:IDocumentDatabase): void;
-    update (locale:string, message:Object, docDB:IDocumentDatabase): void;
-    import (locale:string, messages:Array<Object>, docDB:IDocumentDatabase): void;
-    export (locale:string, docDB:IDocumentDatabase): void;
+    initialize(docDB:IDocumentDatabase): void;
+    switchLocale (locale:string): void;
+    update (locale:string, message:TranslationType): void;
+    import (locale:string, messages:Array<TranslationType>): void;
+    export (locale:string): void;
+  }
+
+  declare interface IExtension {
+    register (): void;
+    unregister(): void;
+    initialize(): void;
+    name: string;
+    version: string;
+    description: string;
+    author: string;
+    route: string;
+    mainView: JSX.Element;
   }
 }
