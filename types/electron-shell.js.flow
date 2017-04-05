@@ -36,10 +36,17 @@
     appFolder: string;
     baseFolder: string;
     iterate(path:string, pattern:string): Promise<*>;
+    upload(file: string): Promise<*>;
+    download(file: string): Promise<*>;
+    delete(file: string): Promise<*>;
   }
 
   declare type EventType = {
-
+    severity: 'critical' | 'error' | 'warning' | 'info',
+    issuer: string,
+    description: string,
+    timestamp: Date,
+    type: 'event'
   }
 
   declare interface IActivityService {
@@ -61,7 +68,10 @@
   }
 
   declare type SettingType = {
-
+    name: string,
+    dataType: 'string' | 'number' | 'boolean',
+    value: Object,
+    type: 'setting'
   }
 
   declare interface ISettingManager {
@@ -90,14 +100,15 @@
   }
 
   declare interface IExtension {
-    register (): void;
-    unregister(): void;
-    initialize(): void;
+    register (settingsManager: ISettingManager, translationManager: ITranslationManager): void;
+    unregister(settingsManager: ISettingManager, translationManager: ITranslationManager): void;
+    initialize(fileStorage: IFileStorage, settings: Array<SettingType>): void;
     name: string;
     version: string;
     description: string;
     author: string;
     route: string;
     mainView: JSX.Element;
+    settingView: JSX.Element;
   }
 }
