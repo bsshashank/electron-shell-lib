@@ -91,7 +91,7 @@
     type: 'translation'
   }
 
-  declare interface ITanslationManager {
+  declare interface ITranslationManager {
     initialize(docDB:IDocumentDatabase): void;
     switchLocale (locale:string): void;
     update (locale:string, message:TranslationType): void;
