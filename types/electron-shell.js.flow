@@ -1,5 +1,9 @@
- declare module 'electron-shell' {
+declare module 'electron-shell' {
 
+  /**
+   *  a structure holding important
+   *  application configuration
+   */
   declare type ApplicationConfig = {
     app: {
       name: string,
@@ -17,30 +21,222 @@
     }
   }
 
-  declare interface IDocumentDatabase {
-    save (doc:Object): Promise<*>;
-    get (id:string): Promise<*>;
-    query (view:string, options:Object): Promise<*>;
-    bulkInsert (docs:Array<Object>) : Promise<*>;
+  /**
+   * a structure holding query options for the
+   * document style database
+   */
+  declare type DocumentDatabaseQueryOptions = {
+    reduce: boolean | string,
+    include_docs: boolean,
+    conflicts: boolean,
+    attachments: boolean,
+    startkey: ?string,
+    endkey: ?string,
+    limit: ?number,
+    skip: ?number,
+    descending: boolean,
+    key: ?string,
+    keys: ?Array<string>,
+    group: boolean,
+    group_level: ?number
   }
 
+  /**
+   * a structure holding lookup options for the
+   * document style database
+   */
+  declare type DocumentDatabaseLookupOptions = {
+    rev: ?string,
+    revs: boolean,
+    revs_info: boolean,
+    conflicts: boolean,
+    attachments: boolean
+  }
+
+  /**
+   * an interface for accessing and manipulating
+   * information in a document-style database
+   *
+   * @interface IDocumentDatabase
+   */
+  declare interface IDocumentDatabase {
+    /**
+     * stores a document object into the database
+     *
+     * @param {Object} doc the document that should be persisted into the database
+     * @returns {Promise} a promise object signalling either success or failure of the operation
+     *
+     * @memberOf IDocumentDatabase
+     */
+    save(doc: Object): Promise<*>;
+
+    /**
+     * lookup a document from the database by it's unique id
+     *
+     * @param {string} id the unique id of the document to be retrieved
+     * @param {DocumentDatabaseLookupOptions} options the options object with additional parameters for the database lookup
+     * @returns {Promise} a promise object signalling either success or failure of the operation
+     *
+     * @memberOf IDocumentDatabase
+     */
+    lookup(id:string, options:?DocumentDatabaseLookupOptions): Promise<*>;
+
+    /**
+     * queries a specific view in the database with some search options
+     *
+     * @param {string} view the name of the view in the database to use
+     * @param {DocumentDatabaseQueryOptions} options the options object with additional parameters for the querying the view
+     * @returns {Promise} a promise object signalling either success or failure of the operation
+     *
+     * @memberOf IDocumentDatabase
+     */
+    query(view:string, options:?DocumentDatabaseQueryOptions): Promise<*>;
+
+    /**
+     * inserts multiple objects as bulk into the database
+     *
+     * @param {Array<Object>} docs the array of documents to insert into the database
+     * @returns {Promise} a promise object signalling either success or failure of the operation
+     *
+     * @memberOf IDocumentDatabase
+     */
+    bulkInsert(docs:Array<Object>): Promise<*>;
+
+    /**
+     * removes an object from the database
+     *
+     * @param {string} id the unique id of the document to be removed
+     * @returns {Promise} a promise object signalling either success or failure of the operation
+     *
+     * @memberOf IDocumentDatabase
+     */
+    remove(id:string): Promise<*>;
+  }
+
+  /**
+   * an interface for accessing and manipulating
+   * information in a sqlite-style database
+   *
+   * @interface ISqlDatabase
+   */
   declare interface ISqlDatabase {
 
   }
 
+  /**
+   * an interface for accessing and manipulating
+   * information in a graph-style database
+   *
+   * @interface ITripleStore
+   */
   declare interface ITripleStore {
 
   }
 
-  declare interface IFileStorage {
-    appFolder: string;
-    baseFolder: string;
-    iterate(path:string, pattern:string): Promise<*>;
-    upload(file: string): Promise<*>;
-    download(file: string): Promise<*>;
-    delete(file: string): Promise<*>;
+  /**
+   * a structure holding the result of iterating the file storage
+   */
+  declare type FileStorageIterationResult = {
+    folder: string,
+    name: string,
+    ext: string,
+    type: string
   }
 
+  /**
+   * an interface for accessing and manipulating
+   * information in an extension-specific file storage
+   *
+   * @interface IFileStorage
+   */
+  declare interface IFileStorage {
+    /**
+     * a read-only property for getting the folder of the application
+     *
+     * @returns {string} the folder where the application resides
+     */
+    +appFolder: string;
+    /**
+     * a read-only property for getting the base folder for the extension-specific file storage
+     *
+     * @returns {string} the base folder for the extension-specific file storage
+     */
+    +baseFolder: string;
+    /**
+     * a read-only property for getting the temporary folder
+     *
+     * @returns {string} the temporary folder
+     */
+    +tempFolder: string;
+
+    /**
+     * iterates over the file storage base directory looking for files and folders matching the given pattern
+     *
+     * @param {string} pattern the pattern to look for in the base folder of the file storage
+     * @returns {Promise} a promise object signalling either success or failure of the operation
+     *
+     * @memberOf IFileStorage
+     */
+    iterate(pattern:string): Promise<Array<FileStorageIterationResult>>;
+
+    /**
+     * uploads a file to the file storage
+     *
+     * @param {string} fileUri the uri to the original file
+     * @param {string} location the final location of the file in the file storage relative to the base folder
+     * @returns {Promise} a promise object signalling either success or failure of the operation
+     *
+     * @memberOf IFileStorage
+     */
+    upload(fileUri: string, location: string): Promise<*>;
+
+    /**
+     * downloads a file from the file storage
+     *
+     * @param {string} file the relative path to the file in the file storage
+     * @param {string} location the location where to save the file to
+     * @returns {Promise} a promise object signalling either success or failure of the operation
+     *
+     * @memberOf IFileStorage
+     */
+    download(file: string, location:string): Promise<*>;
+
+    /**
+     * delete a file from the file storage
+     *
+     * @param {string} file the relative path to the file in the file storage
+     * @returns {Promise} a promise object signalling either success or failure of the operation
+     *
+     * @memberOf IFileStorage
+     */
+    delete(file: string): Promise<*>;
+
+    /**
+     * checks for the existene of a file or folder in the file storage
+     *
+     * @param {string} name the relative path to the file or folder in the file storage
+     * @param {string} type the type to check for - either 'file' or 'folder'
+     * @returns {boolean} a flag denoting whether the item exists or not
+     *
+     * @memberOf IFileStorage
+     */
+    exists(name:string, type: 'file' | 'folder'): boolean;
+
+    /**
+     * creates a file or folder in the file storage
+     *
+     * @param {string} name the relative path to the file or folder in the file storage
+     * @param {string} type the type to check for - either 'file' or 'folder'
+     * @returns {boolean} a flag denoting whether the item has been created or not
+     *
+     * @memberOf IFileStorage
+     */
+    create(name:string, type: 'file' | 'folder'): boolean;
+  }
+
+  /**
+   * a structure defining an event in the application
+   */
   declare type EventType = {
     severity: 'critical' | 'error' | 'warning' | 'info',
     issuer: string,
@@ -50,23 +246,26 @@
   }
 
   declare interface IActivityService {
-    initialize(docDB:IDocumentDatabase): void;
-    getByType (type:string): void;
-    getByDateRange (from:Date, to:Date): void;
-    getByIssuer (issuer:string): void;
-    find (filter:Object): void;
-    create (event:EventType): void;
+    initialize(docDB: IDocumentDatabase): void;
+    getByType(type: string): void;
+    getByDateRange(from: Date, to: Date): void;
+    getByIssuer(issuer: string): void;
+    find(filter: Object): void;
+    create(event: EventType): void;
   }
 
   declare interface IExtensionManager {
-    initialize(fileStorage:IFileStorage, docDB:IDocumentDatabase): void;
-    mountAll (): void;
-    activate (extension:string): void;
-    deactivate (extension:string): void;
-    install (extension:string): void;
-    uninstall (extension:string): void;
+    initialize(fileStorage: IFileStorage, docDB: IDocumentDatabase): void;
+    mountAll(): void;
+    activate(extension: string): void;
+    deactivate(extension: string): void;
+    install(extension: string): void;
+    uninstall(extension: string): void;
   }
 
+  /**
+   * a structure defining a setting in the application
+   */
   declare type SettingType = {
     name: string,
     dataType: 'string' | 'number' | 'boolean',
@@ -75,13 +274,16 @@
   }
 
   declare interface ISettingManager {
-    initialize(docDB:IDocumentDatabase): void;
-    getByExtension (extension:string): void;
-    update (setting:SettingType): void;
-    import (settings:Array<SettingType>): void;
-    export (): void;
+    initialize(docDB: IDocumentDatabase): void;
+    getByExtension(extension: string): void;
+    update(setting: SettingType): void;
+    import(settings: Array<SettingType>): void;
+    export(): void;
   }
 
+  /**
+   * a structure defining a translation in the application
+   */
   declare type TranslationType = {
     _id: string,
     description: string,
@@ -92,23 +294,23 @@
   }
 
   declare interface ITranslationManager {
-    initialize(docDB:IDocumentDatabase): void;
-    switchLocale (locale:string): void;
-    update (locale:string, message:TranslationType): void;
-    import (locale:string, messages:Array<TranslationType>): void;
-    export (locale:string): void;
+    initialize(docDB: IDocumentDatabase): void;
+    switchLocale(locale: string): void;
+    update(locale: string, message: TranslationType): void;
+    import(locale: string, messages: Array<TranslationType>): void;
+    export(locale: string): void;
   }
 
   declare interface IExtension {
-    register (settingsManager: ISettingManager, translationManager: ITranslationManager): void;
+    register(settingsManager: ISettingManager, translationManager: ITranslationManager): void;
     unregister(settingsManager: ISettingManager, translationManager: ITranslationManager): void;
     initialize(fileStorage: IFileStorage, settings: Array<SettingType>): void;
-    name: string;
-    version: string;
-    description: string;
-    author: string;
-    route: string;
-    mainView: JSX.Element;
-    settingView: JSX.Element;
+    +name: string;
+    +version: string;
+    +description: string;
+    +author: string;
+    +initialRoute: string;
+    +mainView: React$Element;
+    +settingView: React$Element;
   }
 }
