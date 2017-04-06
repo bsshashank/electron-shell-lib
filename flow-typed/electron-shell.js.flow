@@ -254,8 +254,20 @@ declare module 'electron-shell-lib' {
     create(event: EventType): void;
   }
 
+  declare type ExtensionInfoType = {
+    _id: string,
+    name: string,
+    description: string,
+    version: string,
+    author: string,
+    route: string,
+    bannerImage: string,
+    state: 'active' | 'deactive' | 'removed'
+    type: 'extension'
+  }
+
   declare interface IExtensionManager {
-    initialize(fileStorage: IFileStorage, docDB: IDocumentDatabase): void;
+    initialize(fileStorage: IFileStorage, docDB: IDocumentDatabase, settingManager: ISettingManager, translationManager: ITranslationManager): void;
     mountAll(): void;
     activate(extName: string): void;
     deactivate(extName: string): void;
@@ -305,11 +317,12 @@ declare module 'electron-shell-lib' {
     register(settingsManager: ISettingManager, translationManager: ITranslationManager): Promise<*>;
     unregister(settingsManager: ISettingManager, translationManager: ITranslationManager): Promise<*>;
     initialize(fileStorage: IFileStorage, settings: Array<SettingType>): Promise<*>;
+    +id: string;
     +name: string;
     +version: string;
     +description: string;
     +author: string;
-    +bannerSrc: string;
+    +bannerImage: string;
     +initialRoute: string;
     +mainView: React$Element<*>;
     +settingView: React$Element<*>;

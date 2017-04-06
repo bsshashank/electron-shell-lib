@@ -10,7 +10,7 @@ class ExtensionLoader {
   tryLoadExtension(extensionFolder: string, extensionName: string):?IExtension {
     let extensionInfo: IExtension
     try {
-      extensionInfo = require(path.join(extensionFolder, extensionName))
+      extensionInfo = require(path.join(extensionFolder, extensionName)).instance
     } catch (ex) {
       console.log(ex)
       extensionInfo = undefined
