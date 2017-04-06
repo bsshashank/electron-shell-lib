@@ -1,4 +1,4 @@
-declare module 'electron-shell' {
+declare module 'electron-shell-lib' {
 
   /**
    *  a structure holding important
@@ -182,13 +182,13 @@ declare module 'electron-shell' {
     /**
      * uploads a file to the file storage
      *
-     * @param {string} fileUri the uri to the original file
+     * @param {string} fileHandle the file object of the original file
      * @param {string} location the final location of the file in the file storage relative to the base folder
      * @returns {Promise} a promise object signalling either success or failure of the operation
      *
      * @memberOf IFileStorage
      */
-    upload(fileUri: string, location: string): Promise<*>;
+    upload(fileHandle: File, location: string): Promise<*>;
 
     /**
      * downloads a file from the file storage
@@ -257,10 +257,10 @@ declare module 'electron-shell' {
   declare interface IExtensionManager {
     initialize(fileStorage: IFileStorage, docDB: IDocumentDatabase): void;
     mountAll(): void;
-    activate(extension: string): void;
-    deactivate(extension: string): void;
-    install(extension: string): void;
-    uninstall(extension: string): void;
+    activate(extName: string): void;
+    deactivate(extName: string): void;
+    install(extName: string, extPackage: File): void;
+    uninstall(extName: string): void;
   }
 
   /**
@@ -302,13 +302,14 @@ declare module 'electron-shell' {
   }
 
   declare interface IExtension {
-    register(settingsManager: ISettingManager, translationManager: ITranslationManager): void;
-    unregister(settingsManager: ISettingManager, translationManager: ITranslationManager): void;
-    initialize(fileStorage: IFileStorage, settings: Array<SettingType>): void;
+    register(settingsManager: ISettingManager, translationManager: ITranslationManager): Promise<*>;
+    unregister(settingsManager: ISettingManager, translationManager: ITranslationManager): Promise<*>;
+    initialize(fileStorage: IFileStorage, settings: Array<SettingType>): Promise<*>;
     +name: string;
     +version: string;
     +description: string;
     +author: string;
+    +bannerSrc: string;
     +initialRoute: string;
     +mainView: React$Element<*>;
     +settingView: React$Element<*>;

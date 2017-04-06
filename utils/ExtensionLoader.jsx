@@ -3,7 +3,7 @@
 import path from 'path'
 import uri from 'url'
 
-import type { IExtension } from 'electron-shell'
+import type { IExtension } from 'electron-shell-lib'
 
 class ExtensionLoader {
 
