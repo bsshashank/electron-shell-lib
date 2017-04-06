@@ -30,15 +30,15 @@ declare module 'electron-shell' {
     include_docs: boolean,
     conflicts: boolean,
     attachments: boolean,
-    startkey: ?string,
-    endkey: ?string,
-    limit: ?number,
-    skip: ?number,
+    startkey?: string,
+    endkey?: string,
+    limit?: number,
+    skip?: number,
     descending: boolean,
-    key: ?string,
-    keys: ?Array<string>,
+    key?: string,
+    keys?: Array<string>,
     group: boolean,
-    group_level: ?number
+    group_level?: number
   }
 
   /**
@@ -46,7 +46,7 @@ declare module 'electron-shell' {
    * document style database
    */
   declare type DocumentDatabaseLookupOptions = {
-    rev: ?string,
+    rev?: string,
     revs: boolean,
     revs_info: boolean,
     conflicts: boolean,
@@ -79,7 +79,7 @@ declare module 'electron-shell' {
      *
      * @memberOf IDocumentDatabase
      */
-    lookup(id:string, options:?DocumentDatabaseLookupOptions): Promise<*>;
+    lookup(id:string, options?:DocumentDatabaseLookupOptions): Promise<*>;
 
     /**
      * queries a specific view in the database with some search options
@@ -90,7 +90,7 @@ declare module 'electron-shell' {
      *
      * @memberOf IDocumentDatabase
      */
-    query(view:string, options:?DocumentDatabaseQueryOptions): Promise<*>;
+    query(view:string, options?:DocumentDatabaseQueryOptions): Promise<*>;
 
     /**
      * inserts multiple objects as bulk into the database
@@ -310,7 +310,7 @@ declare module 'electron-shell' {
     +description: string;
     +author: string;
     +initialRoute: string;
-    +mainView: React$Element;
-    +settingView: React$Element;
+    +mainView: React$Element<*>;
+    +settingView: React$Element<*>;
   }
 }
