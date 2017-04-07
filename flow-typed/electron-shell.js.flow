@@ -262,7 +262,8 @@ declare module 'electron-shell-lib' {
     author: string,
     route: string,
     bannerImage: string,
-    state: 'active' | 'deactive' | 'removed',
+    hasSettings: boolean,
+    status: 'active' | 'deactive' | 'removed',
     type: 'extension'
   }
 
