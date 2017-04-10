@@ -264,6 +264,8 @@ declare module 'electron-shell-lib' {
     bannerImage: string,
     hasSettings: boolean,
     status: 'active' | 'deactive' | 'removed',
+    location: string,
+    file: string,
     type: 'extension'
   }
 
@@ -325,6 +327,7 @@ declare module 'electron-shell-lib' {
     +author: string;
     +bannerImage: string;
     +initialRoute: string;
+    +linkIcon: React$Element<*>;
     +mainView: React$Element<*>;
     +settingView: React$Element<*>;
   }
