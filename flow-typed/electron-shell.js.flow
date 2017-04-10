@@ -90,7 +90,7 @@ declare module 'electron-shell-lib' {
      *
      * @memberOf IDocumentDatabase
      */
-    query(view:string, options?:DocumentDatabaseQueryOptions): Promise<*>;
+    query(view:string, options:DocumentDatabaseQueryOptions): Promise<*>;
 
     /**
      * inserts multiple objects as bulk into the database
