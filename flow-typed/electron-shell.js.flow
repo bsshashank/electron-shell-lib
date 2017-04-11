@@ -263,8 +263,7 @@ declare module 'electron-shell-lib' {
 
   declare interface ISettingManager {
     initialize(docDB: IDocumentDatabase): void;
-    getByExtension(extension: string): void;
-    update(setting: SettingType): void;
+    update(namespace:string, name:string, value:Object): void;
     import(settings: Array<SettingType>): void;
     export(): void;
   }
