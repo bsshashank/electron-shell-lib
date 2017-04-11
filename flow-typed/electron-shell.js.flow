@@ -22,47 +22,6 @@ declare module 'electron-shell-lib' {
   }
 
   /**
-   * a structure holding query options for the
-   * document style database
-   */
-  declare class DocumentDatabaseQueryOptions {
-    reduce: boolean | string,
-    include_docs: boolean,
-    conflicts: boolean,
-    attachments: boolean,
-    startkey?: string,
-    endkey?: string,
-    limit?: number,
-    skip?: number,
-    descending: boolean,
-    key?: string,
-    keys?: Array<string>,
-    group: boolean,
-    group_level?: number
-  }
-
-  /**
-   * a structure holding lookup options for the
-   * document style database
-   */
-  declare class DocumentDatabaseLookupOptions {
-    rev?: string,
-    revs: boolean,
-    revs_info: boolean,
-    conflicts: boolean,
-    attachments: boolean
-  }
-
-  /**
-   * a structure holding save options for the
-   * document style database
-   */
-  declare class DocumentDatabaseSaveOptions {
-    checkVersionTag: boolean,
-    addTimestamp: boolean
-  }
-
-  /**
    * an interface for accessing and manipulating
    * information in a document-style database
    *
@@ -78,7 +37,7 @@ declare module 'electron-shell-lib' {
      *
      * @memberOf IDocumentDatabase
      */
-    save(doc: Object, options?:DocumentDatabaseSaveOptions): Promise<*>;
+    save(doc: Object, options?:{ checkVersionTag?: boolean, addTimestamp?: boolean }): Promise<*>;
 
     /**
      * lookup a document from the database by it's unique id
@@ -89,7 +48,7 @@ declare module 'electron-shell-lib' {
      *
      * @memberOf IDocumentDatabase
      */
-    lookup(id:string, options?:DocumentDatabaseLookupOptions): Promise<*>;
+    lookup(id:string, options?:{ rev?: string, revs?: boolean, revs_info?: boolean, conflicts?: boolean, attachments?: boolean }): Promise<*>;
 
     /**
      * queries a specific view in the database with some search options
@@ -100,7 +59,9 @@ declare module 'electron-shell-lib' {
      *
      * @memberOf IDocumentDatabase
      */
-    query(view:string, options:DocumentDatabaseQueryOptions): Promise<*>;
+    query(view:string, options:{ reduce?: boolean | string, include_docs?: boolean, conflicts?: boolean, attachments?: boolean,
+          startkey?: string, endkey?: string, limit?: number, skip?: number, descending?: boolean, key?: string, keys?: Array<string>,
+          group?: boolean, group_level?: number }): Promise<*>;
 
     /**
      * inserts multiple objects as bulk into the database
@@ -111,7 +72,7 @@ declare module 'electron-shell-lib' {
      *
      * @memberOf IDocumentDatabase
      */
-    bulkInsert(docs:Array<Object>, options?:DocumentDatabaseSaveOptions): Promise<*>;
+    bulkInsert(docs:Array<Object>, options?:{ checkVersionTag?: boolean, addTimestamp?: boolean }): Promise<*>;
 
     /**
      * removes an object from the database
@@ -265,7 +226,7 @@ declare module 'electron-shell-lib' {
     create(event: EventType): void;
   }
 
-  declare class ExtensionInfoType {
+  declare type ExtensionInfoType = {
     _id: string,
     name: string,
     description: string,
@@ -275,8 +236,7 @@ declare module 'electron-shell-lib' {
     bannerImage: string,
     hasSettings: boolean,
     status: 'active' | 'deactive' | 'removed',
-    location: string,
-    file: string,
+    startupPoint: string,
     type: 'extension'
   }
 
@@ -330,7 +290,7 @@ declare module 'electron-shell-lib' {
   declare interface IExtension {
     register(settingsManager: ISettingManager, translationManager: ITranslationManager): Promise<*>;
     unregister(settingsManager: ISettingManager, translationManager: ITranslationManager): Promise<*>;
-    initialize(fileStorage: IFileStorage, settings: Array<SettingType>): Promise<*>;
+    initialize(fileStorage: IFileStorage, settings: Array<SettingType>): void;
     +id: string;
     +name: string;
     +version: string;
