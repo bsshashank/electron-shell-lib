@@ -25,7 +25,7 @@ declare module 'electron-shell-lib' {
    * a structure holding query options for the
    * document style database
    */
-  declare type DocumentDatabaseQueryOptions = {
+  declare class DocumentDatabaseQueryOptions {
     reduce: boolean | string,
     include_docs: boolean,
     conflicts: boolean,
@@ -45,12 +45,21 @@ declare module 'electron-shell-lib' {
    * a structure holding lookup options for the
    * document style database
    */
-  declare type DocumentDatabaseLookupOptions = {
+  declare class DocumentDatabaseLookupOptions {
     rev?: string,
     revs: boolean,
     revs_info: boolean,
     conflicts: boolean,
     attachments: boolean
+  }
+
+  /**
+   * a structure holding save options for the
+   * document style database
+   */
+  declare class DocumentDatabaseSaveOptions {
+    checkVersionTag: boolean,
+    addTimestamp: boolean
   }
 
   /**
@@ -64,11 +73,12 @@ declare module 'electron-shell-lib' {
      * stores a document object into the database
      *
      * @param {Object} doc the document that should be persisted into the database
+     * @param {DocumentDatabaseSaveOptions} options the options object with additional parameters for the database save
      * @returns {Promise} a promise object signalling either success or failure of the operation
      *
      * @memberOf IDocumentDatabase
      */
-    save(doc: Object): Promise<*>;
+    save(doc: Object, options?:DocumentDatabaseSaveOptions): Promise<*>;
 
     /**
      * lookup a document from the database by it's unique id
@@ -96,11 +106,12 @@ declare module 'electron-shell-lib' {
      * inserts multiple objects as bulk into the database
      *
      * @param {Array<Object>} docs the array of documents to insert into the database
+     * @param {DocumentDatabaseSaveOptions} options the options object with additional parameters for the database save
      * @returns {Promise} a promise object signalling either success or failure of the operation
      *
      * @memberOf IDocumentDatabase
      */
-    bulkInsert(docs:Array<Object>): Promise<*>;
+    bulkInsert(docs:Array<Object>, options?:DocumentDatabaseSaveOptions): Promise<*>;
 
     /**
      * removes an object from the database
@@ -136,7 +147,7 @@ declare module 'electron-shell-lib' {
   /**
    * a structure holding the result of iterating the file storage
    */
-  declare type FileStorageIterationResult = {
+  declare class FileStorageIterationResult {
     folder: string,
     name: string,
     ext: string,
@@ -237,7 +248,7 @@ declare module 'electron-shell-lib' {
   /**
    * a structure defining an event in the application
    */
-  declare type EventType = {
+  declare class EventType {
     severity: 'critical' | 'error' | 'warning' | 'info',
     issuer: string,
     description: string,
@@ -254,7 +265,7 @@ declare module 'electron-shell-lib' {
     create(event: EventType): void;
   }
 
-  declare type ExtensionInfoType = {
+  declare class ExtensionInfoType {
     _id: string,
     name: string,
     description: string,
@@ -281,7 +292,7 @@ declare module 'electron-shell-lib' {
   /**
    * a structure defining a setting in the application
    */
-  declare type SettingType = {
+  declare class SettingType {
     name: string,
     dataType: 'string' | 'number' | 'boolean',
     value: Object,
@@ -299,7 +310,7 @@ declare module 'electron-shell-lib' {
   /**
    * a structure defining a translation in the application
    */
-  declare type TranslationType = {
+  declare class TranslationType {
     _id: string,
     description: string,
     defaultMessage: string,
