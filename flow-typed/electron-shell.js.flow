@@ -59,7 +59,7 @@ declare module 'electron-shell-lib' {
      *
      * @memberOf IDocumentDatabase
      */
-    query(view:string, options:{ reduce?: boolean | string, include_docs?: boolean, conflicts?: boolean, attachments?: boolean,
+    query(view:string, options?:{ reduce?: boolean | string, include_docs?: boolean, conflicts?: boolean, attachments?: boolean,
           startkey?: string, endkey?: string, limit?: number, skip?: number, descending?: boolean, key?: string, keys?: Array<string>,
           group?: boolean, group_level?: number }): Promise<*>;
 
@@ -227,7 +227,7 @@ declare module 'electron-shell-lib' {
   }
 
   declare type ExtensionInfoType = {
-    _id: string,
+    id: string,
     name: string,
     description: string,
     version: string,
@@ -253,6 +253,8 @@ declare module 'electron-shell-lib' {
    * a structure defining a setting in the application
    */
   declare class SettingType {
+    id: string,
+    namespace: string,
     name: string,
     dataType: 'string' | 'number' | 'boolean',
     value: Object,
@@ -271,7 +273,7 @@ declare module 'electron-shell-lib' {
    * a structure defining a translation in the application
    */
   declare class TranslationType {
-    _id: string,
+    id: string,
     description: string,
     defaultMessage: string,
     translation: string,
