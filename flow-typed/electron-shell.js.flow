@@ -288,14 +288,20 @@ declare module 'electron-shell-lib' {
     export(locale: string): void;
   }
 
+  declare type TranslatableMessage = {
+    id: string,
+    description: string,
+    defaultMessage: string
+  }
+
   declare interface IExtension {
     register(settingsManager: ISettingManager, translationManager: ITranslationManager): Promise<*>;
     unregister(settingsManager: ISettingManager, translationManager: ITranslationManager): Promise<*>;
     initialize(fileStorage: IFileStorage, settings: Array<SettingType>): void;
     +id: string;
-    +name: string;
+    +name: TranslatableMessage;
     +version: string;
-    +description: string;
+    +description: TranslatableMessage;
     +author: string;
     +bannerImage: string;
     +initialRoute: string;
