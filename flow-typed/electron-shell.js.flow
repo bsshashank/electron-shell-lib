@@ -204,6 +204,12 @@ declare module 'electron-shell-lib' {
      * @memberOf IFileStorage
      */
     create(name:string, type: 'file' | 'folder'): boolean;
+
+    /**
+     * [name description]
+     * @type {[type]}
+     */
+    getExtensionFolder(extension:string): IFileStorage;
   }
 
   /**
@@ -232,11 +238,10 @@ declare module 'electron-shell-lib' {
     description: string,
     version: string,
     author: string,
-    route: string,
     bannerImage: string,
     hasSettings: boolean,
     status: 'active' | 'deactive' | 'removed',
-    startupPoint: string,
+    package: string,
     type: 'extension'
   }
 
@@ -295,8 +300,8 @@ declare module 'electron-shell-lib' {
   }
 
   declare interface IExtension {
-    register(settingsManager: ISettingManager, translationManager: ITranslationManager): Promise<*>;
-    unregister(settingsManager: ISettingManager, translationManager: ITranslationManager): Promise<*>;
+    register(fileStorage: IFileStorage, settingsManager: ISettingManager, translationManager: ITranslationManager): Promise<*>;
+    unregister(fileStorage: IFileStorage, settingsManager: ISettingManager, translationManager: ITranslationManager): Promise<*>;
     initialize(fileStorage: IFileStorage, settings: Array<SettingType>): void;
     +id: string;
     +name: TranslatableMessage;
@@ -304,7 +309,6 @@ declare module 'electron-shell-lib' {
     +description: TranslatableMessage;
     +author: string;
     +bannerImage: string;
-    +initialRoute: string;
     +linkIcon: React$Element<*>;
     +mainView: React$Element<*>;
     +settingView: React$Element<*>;
